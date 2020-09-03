@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exercício com Docker Compose</title>
+  </head>
+  <body>
+    <h1>Exercício com Docker Compose</h1>
+    <script>
+      fetch('http://localhost:3000')
+        .then(async function (response) {
+          console.log(response);
+          document.getElementById(
+            'backend_response'
+          ).innerHTML = await response.text();
+        })
+        .catch(function (error) {
+          console.log('Error: ' + error);
+        });
+    </script>
+    <h2 id="backend_response"></h2>
+  </body>
+</html>
