@@ -2,11 +2,11 @@
 
 - Para criar a imagem:
 
-`docker image build -t build-com-volume .`
+`docker image build -t build-com-volume:1.0.0 .`
 
 - Para criar e executar o container
 
-`docker container run -it -v $(pwd):/app -p 8000:8000 --name build-com-volume build-com-volume`
+`docker container run -it -v $(pwd):/app -p 8000:8000 --name build-com-volume build-com-volume:1.0.0`
 
 _Parâmetro -v serve para mapear uma pasta local como um com-volume da imagem_
 
@@ -16,7 +16,7 @@ _Parâmetro -v serve para mapear uma pasta local como um com-volume da imagem_
 
 - Para acessar um volume de um container a partir de outro container:
 
-`docker run -it --volumes-from=build-com-volume --name=container-from-volume ubuntu bash`
+`docker run -it --volumes-from=build-com-volume --name=container-from-volume ubuntu:20.04 bash`
 
 - Para rodar novamente:
 

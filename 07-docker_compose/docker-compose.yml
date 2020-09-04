@@ -1,16 +1,16 @@
 version: '3'
 services:
   db:
-    image: mongo:4
+    image: mongo:4.4.0-bionic
   backend:
-    image: node:14
+    image: node:14.9.0-buster
     volumes:
       - ./backend:/backend
     ports:
       - 3000:3000
     command: bash -c "cd /backend && npm i && node app"
   frontend:
-    image: nginx:1
+    image: nginx:1.19.2
     volumes:
       - ./frontend:/usr/share/nginx/html/
     ports:

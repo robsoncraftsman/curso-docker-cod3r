@@ -2,8 +2,8 @@
 
 - Para criar a imagem:
 
-`docker image build -t build-com-copy .`
+`docker image build -t build-com-copy:1.0.0 .`
 
 - Para criar e iniciar o container
 
-`docker container run -d -p 8000:80 --name build-com-copy build-com-copy
+`docker container run -d -p 8000:80 --name build-com-copy build-com-copy:1.0.0`

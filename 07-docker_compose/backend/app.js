@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const port = process.env.PORT || '3000';
 
 const { MongoClient } = require('mongodb');
 let db = null;
@@ -16,18 +15,34 @@ function configureDatabase(callback) {
 }
 
 function configureExpress() {
-  const server = express();
+  const app = express();
+  const port = process.env.PORT || '3000';
 
-  server.use(bodyParser.urlencoded({ extended: true }));
-  server.use(bodyParser.json());
-  server.use(cors());
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
+  app.use(cors());
 
-  server.get('/', (req, res) => {
+  app.get('/', (req, res) => {
     res.status(200).send('Backend conectado no mongo DB');
   });
 
-  server.listen(port, () => {
+  const server = app.listen(port, () => {
     console.log(`Listening to requests on port:${port}`);
+  });
+
+  process.on('SIGTERM', () => {
+    console.info('SIGTERM signal received...');
+    if (!server) return;
+    console.log('Closing express...');
+    server.close(() => {
+      console.log('Express closed');
+      if (!db) return;
+      console.log('Closing MongoDB...');
+      db.close(() => {
+        console.log('MongoDB closed');
+        process.exit(0);
+      });
+    });
   });
 }
 
