@@ -16,7 +16,15 @@
 
 `docker-compose exec db psql -U admin -d email`
 
--Para executar uma query no psql:
+- Para executar uma query no psql:
+
 _NOTA: colocar ponto e vírugula no final do comando sql_
 
 `select * from emails;`
+
+- Para criar várias instâncias de um container:
+  `docker-compose up -d --scale worker=3`
+
+- Para sobrescrever ou extender a configuração do docker-compose:
+
+> https://docs.docker.com/compose/extends/

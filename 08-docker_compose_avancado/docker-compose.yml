@@ -4,14 +4,15 @@ volumes:
 networks:
   banco:
   web:
+  fila:
 services:
   db:
     image: postgres:12.4
-    ports:
-      - '5432:5432'
     environment:
       POSTGRES_USER: 'admin'
       POSTGRES_PASSWORD: 'pwd'
+    ports:
+      - '5432:5432'
     volumes:
       # Volume dos dados
       - dados:/var/lib/postgresql/data
@@ -35,8 +36,13 @@ services:
       - backend
   backend:
     image: python:3.8.5-buster
+    environment:
+      DB_HOST: db
+      DB_USER: admin
+      DB_PASSWORD: pwd
+      DB_NAME: email
+      REDIS_HOST: queue
     volumes:
-      # Aplicação
       - ./backend:/app
     working_dir: /app
     command: bash ./app.sh
@@ -45,5 +51,22 @@ services:
     networks:
       - banco
       - web
+      - fila
     depends_on:
       - db
+  queue:
+    image: redis:6.0.7
+    networks:
+      - fila
+  worker:
+    build: worker
+    environment:
+      REDIS_HOST: definido_no_arquivo_override
+    volumes:
+      - ./worker:/worker
+    working_dir: /worker
+    command: worker.py
+    networks:
+      - fila
+    depends_on:
+      - queue
